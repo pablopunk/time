@@ -14,6 +14,6 @@
 
 ## Examples
 
-- [https://time.pablopunk.now.sh?seconds&fg=green&bg=royalblue&font=monospace][]
-- [https://time.pablopunk.now.sh?seconds&fg=#11cc88&bg=#454545&font=monospace][]
-- [https://time.pablopunk.now.sh?seconds][]
+- https://time.pablopunk.now.sh?seconds&fg=green&bg=royalblue&font=monospace
+- https://time.pablopunk.now.sh?seconds&fg=#11cc88&bg=#454545&font=monospace
+- https://time.pablopunk.now.sh?seconds
