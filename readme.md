@@ -7,7 +7,7 @@
 - `fg`: Font color. Examples:
   - `?fg=red`
   - `?fg=#ff00ff`
-- `bg`: Background color. Examples:
+- `bg`: Background color.
 - `font`: Font family. Examples:
   - `?font=monospace`
 - `seconds`: Show seconds if this argument present.
