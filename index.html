@@ -28,7 +28,8 @@
       return {
         bg: query.get('bg') || 'black',
         fg: query.get('fg') || 'royalblue',
-        font: query.get('font') || "'Helvetica Neue', Arial"
+        font: query.get('font') || "'Helvetica Neue', Arial",
+        seconds: query.get('seconds') != undefined
       }
     }
 
@@ -39,7 +40,11 @@
     main.style.fontFamily = options.font
 
     function updateTime() {
-      document.querySelector('#time').innerText = (new Date).toLocaleString().replace(new RegExp('.* '), '')
+      let time = (new Date).toLocaleString().replace(/.* /, '')
+      if (!options.seconds) {
+        time = time.replace(/(\d+:\d+):\d+/, '$1')
+      }
+      document.querySelector('#time').innerText = time
     }
     updateTime()
     setInterval(updateTime, 1000)
