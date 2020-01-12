@@ -40,7 +40,7 @@
     main.style.fontFamily = options.font
 
     function updateTime() {
-      let time = (new Date).toLocaleString().replace(/.* /, '')
+      let time = (new Date).toString().split(' ')[4]
       if (!options.seconds) {
         time = time.replace(/(\d+:\d+):\d+/, '$1')
       }
