@@ -2,7 +2,7 @@ import React from "react";
 import * as validHexColor from "valid-hex-color";
 import palettes from "nice-color-palettes";
 
-function whatTimeIsIt(seconds: boolean) {
+whatTimeIsIt = (seconds: boolean) => {
   let time = new Date().toString().split(" ")[4];
   if (!seconds) {
     time = time.replace(/(\d+:\d+):\d+/, "$1");
@@ -26,7 +26,7 @@ interface IProps {
   showLink: boolean;
 }
 
-function normalizeColors(colors) {
+normalizeColors = (colors) => {
   const normalized = {};
   ["fg", "bg"].map(key => {
     if (colors[key] != null) {
@@ -44,7 +44,7 @@ function normalizeColors(colors) {
   };
 }
 
-function randomizeColors(colors) {
+randomizeColors = (colors) => {
   const palette = palettes[Math.ceil(Math.random() * palettes.length)];
 
   return {
@@ -58,7 +58,7 @@ export default class extends React.Component<IProps, IState> {
   static async getInitialProps({ query }) {
     query = normalizeColors(query);
 
-    if (query.randomColors != null) {
+    if (query.randomColors !== null) {
       query = randomizeColors(query);
     }
 
@@ -76,9 +76,9 @@ export default class extends React.Component<IProps, IState> {
       fg: "royalblue",
       fontSize: "10em",
       ...query,
-      seconds: query.seconds != null,
-      randomColors: query.randomColors != null,
-      showLink: query.showLink != null
+      seconds: query.seconds !== null,
+      randomColors: query.randomColors !== null,
+      showLink: query.showLink !== null
     };
   }
 
@@ -88,7 +88,7 @@ export default class extends React.Component<IProps, IState> {
     this.state = {
       time: whatTimeIsIt(props.seconds),
       mouseInteraction:
-        this.props.showLink == null ? false : this.props.showLink
+        this.props.showLink === null ? false : this.props.showLink
     };
   }
 
