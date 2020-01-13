@@ -4,6 +4,8 @@
 
 Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
 
+![screenshot](https://raw.githubusercontent.com/pablopunk/time/master/screenshot.png)
+
 ## Customize options
 
 - `fg`: Font color. Examples:
