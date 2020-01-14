@@ -27,6 +27,7 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
 - https://time.pablopunk.com/?seconds&fg=F1396D&bg=382F32&font=monospace
 - https://time.pablopunk.com/?fg=11cc88&bg=454545&font=monospace&fontSize=200px
 - https://time.pablopunk.com/?seconds&randomColors&blink
+- https://time.pablopunk.com/?fg=white&bg=transparent (this one is nice for Plash)
 
 ## Author
 
