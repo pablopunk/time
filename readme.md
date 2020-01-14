@@ -19,13 +19,14 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
   - `?fontSize=200px`
 - `seconds`: Show seconds if this argument present.
 - `randomColors`: Sets a random color both for background and foreground.
+- `blink`: The colon between the hours and the minutes will blink each second.
 - `showLink`: A link to this repo is shown automatically when mouse input is detected, but it can be forced using this option.
 
 ## Examples
 
 - https://time.pablopunk.now.sh/?seconds&fg=F1396D&bg=382F32&font=monospace
 - https://time.pablopunk.now.sh/?fg=11cc88&bg=454545&font=monospace&fontSize=200px
-- https://time.pablopunk.now.sh/?seconds&randomColors
+- https://time.pablopunk.now.sh/?seconds&randomColors&blink
 
 ## Author
 

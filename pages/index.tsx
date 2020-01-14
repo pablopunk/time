@@ -2,18 +2,32 @@ import React from "react";
 import * as validHexColor from "valid-hex-color";
 import palettes from "nice-color-palettes";
 
-function whatTimeIsIt(seconds: boolean) {
-  let time = new Date().toString().split(" ")[4];
-  if (!seconds) {
-    time = time.replace(/(\d+:\d+):\d+/, "$1");
+function whatTimeIsIt() {
+  const now = new Date();
+
+  let time = {
+    hours: now.getHours().toString(),
+    minutes: now.getMinutes().toString(),
+    seconds: now.getSeconds().toString()
+  };
+
+  if (time.seconds.length === 1) {
+    time.seconds = "0" + time.seconds;
+  }
+
+  if (time.minutes.length === 1) {
+    time.minutes = "0" + time.minutes;
   }
 
   return time;
 }
 
 interface IState {
-  time: string;
+  hours: string;
+  minutes: string;
+  seconds: string;
   mouseInteraction: boolean;
+  lastTickHadColon: boolean;
 }
 
 interface IProps {
@@ -24,6 +38,7 @@ interface IProps {
   font: string;
   fontSize: string;
   showLink: boolean;
+  blink: boolean;
 }
 
 function normalizeColors(colors) {
@@ -78,7 +93,8 @@ export default class extends React.Component<IProps, IState> {
       ...query,
       seconds: query.seconds != null,
       randomColors: query.randomColors != null,
-      showLink: query.showLink != null
+      showLink: query.showLink != null,
+      blink: query.blink != null
     };
   }
 
@@ -86,31 +102,60 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      time: "",
+      hours: "",
+      minutes: "",
+      seconds: "",
       mouseInteraction:
-        this.props.showLink == null ? false : this.props.showLink
+        this.props.showLink == null ? false : this.props.showLink,
+      lastTickHadColon: true
     };
   }
 
-  updateTime() {
-    this.setState({ time: whatTimeIsIt(this.props.seconds) });
+  tick() {
+    let { lastTickHadColon } = this.state;
+    let time = whatTimeIsIt();
+
+    this.setState({
+      ...time,
+      lastTickHadColon: !lastTickHadColon
+    });
   }
 
   componentDidMount() {
-    this.updateTime();
+    this.tick();
     setInterval(() => {
-      this.updateTime();
+      this.tick();
     }, 1000);
   }
 
   render() {
+    const { blink } = this.props;
+    const { lastTickHadColon } = this.state;
+    let colonOpacity = 1;
+
+    if (blink && lastTickHadColon) {
+      colonOpacity = 0;
+    }
+
     return (
       <>
         {this.state.mouseInteraction && (
           <a href="https://github.com/pablopunk/time">Code available here</a>
         )}
         <main onMouseOver={() => this.setState({ mouseInteraction: true })}>
-          <div id="time">{this.state.time}</div>
+          <div id="time">
+            <span id="hours">{this.state.hours}</span>
+            <span className="colon" style={{ opacity: colonOpacity }}>
+              :
+            </span>
+            <span id="minutes">{this.state.minutes}</span>
+            {this.props.seconds && (
+              <>
+                <span className="colon">:</span>
+                <span id="seconds">{this.state.seconds}</span>
+              </>
+            )}
+          </div>
           <style global jsx>{`
             body,
             html {
