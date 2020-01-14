@@ -1,4 +1,4 @@
-# Time
+# Time by [pablo.pink](https://pablo.pink)
 
 > https://time.pablopunk.now.sh
 
