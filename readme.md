@@ -27,3 +27,9 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
 - https://time.pablopunk.now.sh/?fg=11cc88&bg=454545&font=monospace&fontSize=200px
 - https://time.pablopunk.now.sh/?seconds&randomColors
 
+## Author
+
+| ![me](https://gravatar.com/avatar/fa50aeff0ddd6e63273a068b04353d9d?size=100) |
+| ---------------------------------------------------------------------------- |
+| [Pablo Varela](https://pablo.pink)                                           |
+
