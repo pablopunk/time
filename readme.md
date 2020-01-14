@@ -4,7 +4,7 @@
 
 Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
 
-![screenshot](https://raw.githubusercontent.com/pablopunk/time/master/screenshot.png)
+![screenshot](https://raw.githubusercontent.com/pablopunk/time/master/screenshot.gif)
 
 ## Customize options
 
