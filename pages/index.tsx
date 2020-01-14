@@ -86,15 +86,20 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      time: whatTimeIsIt(props.seconds),
+      time: "",
       mouseInteraction:
         this.props.showLink == null ? false : this.props.showLink
     };
   }
 
+  updateTime() {
+    this.setState({ time: whatTimeIsIt(this.props.seconds) });
+  }
+
   componentDidMount() {
+    this.updateTime();
     setInterval(() => {
-      this.setState({ time: whatTimeIsIt(this.props.seconds) });
+      this.updateTime();
     }, 1000);
   }
 
