@@ -1,6 +1,6 @@
 # Time by [pablo.pink](https://pablo.pink)
 
-> https://time.pablopunk.now.sh
+> https://time.pablopunk.com
 
 Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
 
@@ -24,9 +24,9 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
 
 ## Examples
 
-- https://time.pablopunk.now.sh/?seconds&fg=F1396D&bg=382F32&font=monospace
-- https://time.pablopunk.now.sh/?fg=11cc88&bg=454545&font=monospace&fontSize=200px
-- https://time.pablopunk.now.sh/?seconds&randomColors&blink
+- https://time.pablopunk.com/?seconds&fg=F1396D&bg=382F32&font=monospace
+- https://time.pablopunk.com/?fg=11cc88&bg=454545&font=monospace&fontSize=200px
+- https://time.pablopunk.com/?seconds&randomColors&blink
 
 ## Author
 
