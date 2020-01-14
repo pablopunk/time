@@ -123,10 +123,9 @@ export default class extends React.Component<IProps, IState> {
               font-weight: bold;
               color: ${this.props.fg};
               background-color: ${this.props.bg};
-            }
-            #time {
               font-family: ${this.props.font};
               font-size: ${this.props.fontSize};
+              font-variant-numeric: tabular-nums;
             }
             a {
               position: absolute;
