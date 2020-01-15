@@ -17,6 +17,19 @@
   "devDependencies": {
     "@types/node": "^13.1.6",
     "@types/react": "^16.9.17",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.4",
+    "husky": "*",
+    "prettier": "*",
+    "pretty-quick": "*"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2
   }
 }

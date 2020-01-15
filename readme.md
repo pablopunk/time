@@ -17,6 +17,15 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
 - `fontSize`: The size of the font in the clock. Examples:
   - `?fontSize=5rem`
   - `?fontSize=200px`
+- `position`: Position on the screen. Defaults to center:
+  ```
+  top-left      top       top-right
+  left                        right
+  bottom-left  bottom  bottom-right
+  ```
+  Examples:
+  - `?position=top-left`
+  - `?position=bottom`
 - `seconds`: Show seconds if this argument present.
 - `randomColors`: Sets a random color both for background and foreground.
 - `blink`: The colon between the hours and the minutes will blink each second.
@@ -33,4 +42,3 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
 | ![me](https://gravatar.com/avatar/fa50aeff0ddd6e63273a068b04353d9d?size=100) |
 | ---------------------------------------------------------------------------- |
 | [Pablo Varela](https://pablo.pink)                                           |
-
