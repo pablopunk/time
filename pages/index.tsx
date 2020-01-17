@@ -188,7 +188,7 @@ export default class extends React.Component<IProps, IState> {
             <span id="minutes">{this.state.minutes}</span>
             {this.props.seconds && (
               <>
-                <span className="colon">:</span>
+                <span className="colon" style={{ opacity: colonOpacity }}>:</span>
                 <span id="seconds">{this.state.seconds}</span>
               </>
             )}
