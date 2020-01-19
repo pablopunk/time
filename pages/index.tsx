@@ -128,10 +128,7 @@ export default class extends React.Component<IProps, IState> {
     let { lastTickHadColon } = this.state
     let time = whatTimeIsIt()
 
-    this.setState({
-      ...time,
-      lastTickHadColon: !lastTickHadColon
-    })
+    this.setState(time)
   }
 
   componentDidMount() {
@@ -139,6 +136,13 @@ export default class extends React.Component<IProps, IState> {
     setInterval(() => {
       this.tick()
     }, 1000)
+    
+    // Let colons blink twice a second
+    setInterval(() => {
+      this.setState({
+        lastTickHadColon: !lastTickHadColon
+      })
+    }, 500)
   }
 
   getFlexPositions() {
