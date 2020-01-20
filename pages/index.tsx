@@ -120,7 +120,7 @@ export default class extends React.Component<IProps, IState> {
       seconds: '',
       mouseInteraction:
         this.props.showLink == null ? false : this.props.showLink,
-      lastTickHadColon: true
+      lastTickHadColon: false
     }
   }
 
