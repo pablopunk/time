@@ -125,9 +125,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   tick() {
-    let { lastTickHadColon } = this.state
     let time = whatTimeIsIt()
-
     this.setState(time)
   }
 
@@ -139,6 +137,7 @@ export default class extends React.Component<IProps, IState> {
     
     // Let colons blink twice a second
     setInterval(() => {
+      const { lastTickHadColon } = this.state
       this.setState({
         lastTickHadColon: !lastTickHadColon
       })
