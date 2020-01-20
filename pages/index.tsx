@@ -126,7 +126,7 @@ export default class extends React.Component<IProps, IState> {
 
   tick() {
     let time = whatTimeIsIt()
-    this.setState(time)
+    this.setState({ ...time })
   }
 
   componentDidMount() {
@@ -134,10 +134,11 @@ export default class extends React.Component<IProps, IState> {
     setInterval(() => {
       this.tick()
     }, 1000)
-    
+
     // Let colons blink twice a second
     setInterval(() => {
       const { lastTickHadColon } = this.state
+
       this.setState({
         lastTickHadColon: !lastTickHadColon
       })
@@ -191,7 +192,9 @@ export default class extends React.Component<IProps, IState> {
             <span id="minutes">{this.state.minutes}</span>
             {this.props.seconds && (
               <>
-                <span className="colon" style={{ opacity: colonOpacity }}>:</span>
+                <span className="colon" style={{ opacity: colonOpacity }}>
+                  :
+                </span>
                 <span id="seconds">{this.state.seconds}</span>
               </>
             )}
