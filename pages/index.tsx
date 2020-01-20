@@ -120,18 +120,13 @@ export default class extends React.Component<IProps, IState> {
       seconds: '',
       mouseInteraction:
         this.props.showLink == null ? false : this.props.showLink,
-      lastTickHadColon: true
+      lastTickHadColon: false
     }
   }
 
   tick() {
-    let { lastTickHadColon } = this.state
     let time = whatTimeIsIt()
-
-    this.setState({
-      ...time,
-      lastTickHadColon: !lastTickHadColon
-    })
+    this.setState(time)
   }
 
   componentDidMount() {
@@ -139,6 +134,14 @@ export default class extends React.Component<IProps, IState> {
     setInterval(() => {
       this.tick()
     }, 1000)
+    
+    // Let colons blink twice a second
+    setInterval(() => {
+      const { lastTickHadColon } = this.state
+      this.setState({
+        lastTickHadColon: !lastTickHadColon
+      })
+    }, 500)
   }
 
   getFlexPositions() {
@@ -188,7 +191,7 @@ export default class extends React.Component<IProps, IState> {
             <span id="minutes">{this.state.minutes}</span>
             {this.props.seconds && (
               <>
-                <span className="colon">:</span>
+                <span className="colon" style={{ opacity: colonOpacity }}>:</span>
                 <span id="seconds">{this.state.seconds}</span>
               </>
             )}
