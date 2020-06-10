@@ -3,24 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 1234",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
-    "next": "9.3.2",
+    "next": "^9.4.4",
     "nice-color-palettes": "^3.0.0",
-    "react": "16.12.0",
-    "react-dom": "16.12.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "valid-hex-color": "^1.1.1"
   },
   "devDependencies": {
     "@types/node": "^13.1.6",
     "@types/react": "^16.9.17",
-    "typescript": "^3.7.4",
     "husky": "*",
     "prettier": "*",
-    "pretty-quick": "*"
+    "pretty-quick": "*",
+    "typescript": "^3.7.4"
   },
   "husky": {
     "hooks": {

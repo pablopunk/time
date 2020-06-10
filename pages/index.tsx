@@ -169,21 +169,31 @@ export default class extends React.Component<IProps, IState> {
 
   render() {
     const { blink, position } = this.props
-    const { lastTickHadColon } = this.state
+    const { lastTickHadColon, mouseInteraction } = this.state
     let colonOpacity = 1
 
     if (blink && lastTickHadColon) {
       colonOpacity = 0
     }
 
+    if (mouseInteraction) {
+      setTimeout(() => {
+        this.setState({ mouseInteraction: false })
+      }, 3000) // hide in 3 seconds
+    }
+
     const flexPositions = this.getFlexPositions()
 
     return (
       <>
-        {this.state.mouseInteraction && (
+        {mouseInteraction && (
           <a href="https://github.com/pablopunk/time">Code available here</a>
         )}
-        <main onMouseOver={() => this.setState({ mouseInteraction: true })}>
+        <main
+          onMouseMove={() =>
+            !mouseInteraction && this.setState({ mouseInteraction: true })
+          }
+        >
           <div id="time">
             <span id="hours">{this.state.hours}</span>
             <span className="colon" style={{ opacity: colonOpacity }}>
