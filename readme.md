@@ -1,4 +1,4 @@
-# Time by [pablopunk](https://pablo.im)
+# Time by [pablopunk](https://pablopunk.com)
 
 > https://time.pablopunk.com
 
@@ -46,4 +46,4 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
 
 | ![me](https://gravatar.com/avatar/fa50aeff0ddd6e63273a068b04353d9d?size=100) |
 | ---------------------------------------------------------------------------- |
-| [Pablo Varela](https://pablo.im)                                             |
+| [Pablo Varela](https://pablopunk.com)                                        |
