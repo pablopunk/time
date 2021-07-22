@@ -8,7 +8,7 @@ function whatTimeIsIt() {
   let time = {
     hours: now.getHours().toString(),
     minutes: now.getMinutes().toString(),
-    seconds: now.getSeconds().toString()
+    seconds: now.getSeconds().toString(),
   }
 
   if (time.seconds.length === 1) {
@@ -43,6 +43,7 @@ interface IProps {
   showLink: boolean
   blink: boolean
   position: Position
+  format: 12 | 24
 }
 
 interface IState {
@@ -55,7 +56,7 @@ interface IState {
 
 function normalizeColors(colors) {
   const normalized = {}
-  ;['fg', 'bg'].map(key => {
+  ;['fg', 'bg'].map((key) => {
     if (colors[key] != null) {
       if (validHexColor.check(`#${colors[key]}`)) {
         normalized[key] = `#${colors[key]}`
@@ -67,7 +68,7 @@ function normalizeColors(colors) {
 
   return {
     ...colors,
-    ...normalized
+    ...normalized,
   }
 }
 
@@ -77,7 +78,7 @@ function randomizeColors(colors) {
   return {
     ...colors,
     fg: palette[0],
-    bg: palette[palette.length - 1]
+    bg: palette[palette.length - 1],
   }
 }
 
@@ -107,7 +108,8 @@ export default class extends React.Component<IProps, IState> {
       seconds: query.seconds != null,
       randomColors: query.randomColors != null,
       showLink: query.showLink != null,
-      blink: query.blink != null
+      blink: query.blink != null,
+      format: parseInt(query.format || '24'),
     }
   }
 
@@ -120,7 +122,7 @@ export default class extends React.Component<IProps, IState> {
       seconds: '',
       mouseInteraction:
         this.props.showLink == null ? false : this.props.showLink,
-      lastTickHadColon: false
+      lastTickHadColon: false,
     }
   }
 
@@ -140,7 +142,7 @@ export default class extends React.Component<IProps, IState> {
       const { lastTickHadColon } = this.state
 
       this.setState({
-        lastTickHadColon: !lastTickHadColon
+        lastTickHadColon: !lastTickHadColon,
       })
     }, 500)
   }
@@ -149,7 +151,7 @@ export default class extends React.Component<IProps, IState> {
     const { position } = this.props
     let flexPosition = {
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
     }
 
     if (position.includes('top')) {
@@ -168,7 +170,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { blink, position } = this.props
+    const { blink } = this.props
     const { lastTickHadColon, mouseInteraction } = this.state
     let colonOpacity = 1
 
@@ -183,6 +185,11 @@ export default class extends React.Component<IProps, IState> {
     }
 
     const flexPositions = this.getFlexPositions()
+    let hours = parseInt(this.state.hours) || 0
+
+    if (this.props.format === 12) {
+      hours = hours < 12 ? hours : hours - 12
+    }
 
     return (
       <>
@@ -195,7 +202,7 @@ export default class extends React.Component<IProps, IState> {
           }
         >
           <div id="time">
-            <span id="hours">{this.state.hours}</span>
+            <span id="hours">{hours}</span>
             <span className="colon" style={{ opacity: colonOpacity }}>
               :
             </span>

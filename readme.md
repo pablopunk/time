@@ -34,6 +34,7 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
 - `randomColors`: Sets a random color both for background and foreground.
 - `blink`: The colon between the hours and the minutes will blink each second.
 - `showLink`: A link to this repo is shown automatically when mouse input is detected, but it can be forced using this option.
+- `format=12`: Don't like military time? Shame on you. But you can use 12h format instead.
 
 ## Examples
 
