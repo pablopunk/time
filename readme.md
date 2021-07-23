@@ -9,14 +9,15 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
 ## Customize options
 
 - `fg`: Font color. Examples:
-  - `?fg=red`
-  - `?fg=ff00ff`
+  - [`?fg=red`](https://time.pablopunk.com/?fg=red)
+  - [`?fg=ff00ff`](https://time.pablopunk.com/?fg=ff00ff)
 - `bg`: Background color.
+  - [`?bg=lightpink`](https://time.pablopunk.com/?bg=lightpink)
 - `font`: Font family. Examples:
-  - `?font=SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace`
+  - [`?font=SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace`](https://time.pablopunk.com/?font=SFMono-Regular,Consolas,%27Liberation%20Mono%27,Menlo,monospace)
 - `fontSize`: The size of the font in the clock. Examples:
-  - `?fontSize=5rem`
-  - `?fontSize=200px`
+  - [`?fontSize=5rem`](https://time.pablopunk.com/?fontSize=5rem)
+  - [`?fontSize=200px`](https://time.pablopunk.com/?fontSize=200px)
 - `position`: Position on the screen. Defaults to center:
 
   ```
@@ -27,16 +28,21 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
 
   Examples:
 
-  - `?position=top-left`
-  - `?position=bottom`
+  - [`?position=top-left`](https://time.pablopunk.com/?position=top-left)
+  - [`?position=bottom`](https://time.pablopunk.com/?position=bottom)
 
 - `seconds`: Show seconds if this argument present.
+  - [`?seconds`](https://time.pablopunk.com/?seconds)
 - `randomColors`: Sets a random color both for background and foreground.
+  - [`?randomColors`](https://time.pablopunk.com/?randomColors)
 - `blink`: The colon between the hours and the minutes will blink each second.
+  - [`?blink`](https://time.pablopunk.com/?blink)
 - `showLink`: A link to this repo is shown automatically when mouse input is detected, but it can be forced using this option.
+  - [`?showLink`](https://time.pablopunk.com/?showLink)
 - `format=12`: Don't like military time? Shame on you. But you can use 12h format instead.
+  - [`?format=12`](https://time.pablopunk.com/?format=12)
 
-## Examples
+## More Examples
 
 - https://time.pablopunk.com/?seconds&fg=F1396D&bg=382F32&font=monospace
 - https://time.pablopunk.com/?fg=11cc88&bg=454545&font=monospace&fontSize=200px&position=bottom-right
