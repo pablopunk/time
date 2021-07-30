@@ -4,10 +4,12 @@ module.exports = {
       {
         source: '/goat',
         destination: 'https://time.pablopunk.com/count',
+        locale: false,
       },
       {
         source: '/count.js',
         destination: 'https://gc.zgo.at/count.js',
+        locale: false,
       },
     ]
   },
