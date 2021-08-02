@@ -6,17 +6,9 @@ function whatTimeIsIt() {
   const now = new Date()
 
   let time = {
-    hours: now.getHours().toString(),
-    minutes: now.getMinutes().toString(),
-    seconds: now.getSeconds().toString(),
-  }
-
-  if (time.seconds.length === 1) {
-    time.seconds = '0' + time.seconds
-  }
-
-  if (time.minutes.length === 1) {
-    time.minutes = '0' + time.minutes
+    hours: now.getHours().toString().padStart(2, '0'),
+    minutes: now.getMinutes().toString().padStart(2, '0'),
+    seconds: now.getSeconds().toString().padStart(2, '0'),
   }
 
   return time
