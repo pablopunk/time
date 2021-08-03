@@ -41,6 +41,8 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
   - [`?showLink`](https://time.pablopunk.com/?showLink)
 - `format=12`: Don't like military time? Shame on you. But you can use 12h format instead.
   - [`?format=12`](https://time.pablopunk.com/?format=12)
+- `pad`: Single digit hours will be padded with a 0: 9:41 will be shown as 09:41.
+  - [`?pad`](https://time.pablopunk.com/?pad)
 
 ## More Examples
 

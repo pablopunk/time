@@ -2,21 +2,21 @@ import React from 'react'
 import * as validHexColor from 'valid-hex-color'
 import palettes from 'nice-color-palettes'
 
-function whatTimeIsIt() {
+function whatTimeIsIt(props: IProps) {
   const now = new Date()
 
-  let time = {
-    hours: now.getHours().toString(),
-    minutes: now.getMinutes().toString(),
-    seconds: now.getSeconds().toString(),
+  let hours = now.getHours()
+  let minutes = now.getMinutes()
+  let seconds = now.getSeconds()
+
+  if (props.format === 12) {
+    hours = hours % 12 || 12
   }
 
-  if (time.seconds.length === 1) {
-    time.seconds = '0' + time.seconds
-  }
-
-  if (time.minutes.length === 1) {
-    time.minutes = '0' + time.minutes
+  let time: any = {
+    hours: hours.toString().padStart(props.pad ? 2 : 1, '0'),
+    minutes: minutes.toString().padStart(2, '0'),
+    seconds: seconds.toString().padStart(2, '0'),
   }
 
   return time
@@ -44,6 +44,7 @@ interface IProps {
   blink: boolean
   position: Position
   format: 12 | 24
+  pad: boolean
 }
 
 interface IState {
@@ -110,6 +111,7 @@ export default class extends React.Component<IProps, IState> {
       showLink: query.showLink != null,
       blink: query.blink != null,
       format: parseInt(query.format || '24'),
+      pad: query.pad != null,
     }
   }
 
@@ -127,7 +129,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   tick() {
-    let time = whatTimeIsIt()
+    let time = whatTimeIsIt(this.props)
     this.setState({ ...time })
   }
 
@@ -185,11 +187,6 @@ export default class extends React.Component<IProps, IState> {
     }
 
     const flexPositions = this.getFlexPositions()
-    let hours = parseInt(this.state.hours) || 0
-
-    if (this.props.format === 12) {
-      hours = hours < 12 ? hours : hours - 12
-    }
 
     return (
       <>
@@ -202,7 +199,7 @@ export default class extends React.Component<IProps, IState> {
           }
         >
           <div id="time">
-            <span id="hours">{hours}</span>
+            <span id="hours">{this.state.hours}</span>
             <span className="colon" style={{ opacity: colonOpacity }}>
               :
             </span>
