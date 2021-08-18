@@ -3,7 +3,7 @@ module.exports = {
     return [
       {
         source: '/goat',
-        destination: 'https://time.pablopunk.com/count',
+        destination: 'https://time.goatcounter.com/count',
         locale: false,
       },
       {
