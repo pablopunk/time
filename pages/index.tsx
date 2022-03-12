@@ -1,5 +1,5 @@
 import React from 'react'
-import * as validHexColor from 'valid-hex-color'
+import isHexColor from 'is-hexcolor'
 import palettes from 'nice-color-palettes'
 
 function whatTimeIsIt(props: IProps) {
@@ -53,13 +53,14 @@ interface IState {
   seconds: string
   mouseInteraction: boolean
   lastTickHadColon: boolean
+  clearMouseTimeout?: ReturnType<typeof setTimeout>
 }
 
 function normalizeColors(colors) {
   const normalized = {}
   ;['fg', 'bg'].map((key) => {
     if (colors[key] != null) {
-      if (validHexColor.check(`#${colors[key]}`)) {
+      if (isHexColor(`#${colors[key]}`)) {
         normalized[key] = `#${colors[key]}`
       } else {
         normalized[key] = colors[key]
@@ -171,6 +172,24 @@ export default class extends React.Component<IProps, IState> {
     return flexPosition
   }
 
+  mouseInteracting() {
+    const { mouseInteraction, clearMouseTimeout } = this.state
+
+    if (clearMouseTimeout) {
+      clearTimeout(clearMouseTimeout)
+    }
+
+    const newClearMouseTimeout = setTimeout(
+      () => this.setState({ mouseInteraction: false }),
+      2000
+    )
+
+    this.setState({
+      mouseInteraction: true,
+      clearMouseTimeout: newClearMouseTimeout,
+    })
+  }
+
   render() {
     const { blink } = this.props
     const { lastTickHadColon, mouseInteraction } = this.state
@@ -180,12 +199,6 @@ export default class extends React.Component<IProps, IState> {
       colonOpacity = 0
     }
 
-    if (mouseInteraction) {
-      setTimeout(() => {
-        this.setState({ mouseInteraction: false })
-      }, 3000) // hide in 3 seconds
-    }
-
     const flexPositions = this.getFlexPositions()
 
     return (
@@ -193,11 +206,7 @@ export default class extends React.Component<IProps, IState> {
         {mouseInteraction && (
           <a href="https://github.com/pablopunk/time">Code available here</a>
         )}
-        <main
-          onMouseMove={() =>
-            !mouseInteraction && this.setState({ mouseInteraction: true })
-          }
-        >
+        <main onMouseMove={() => this.mouseInteracting()}>
           <div id="time">
             <span id="hours">{this.state.hours}</span>
             <span className="colon" style={{ opacity: colonOpacity }}>
