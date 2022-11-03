@@ -20,7 +20,7 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
   - [`?fontSize=200px`](https://time.pablopunk.com/?fontSize=200px)
 - `position`: Position on the screen. Defaults to center:
 
-  ```
+  ```txt
   top-left      top       top-right
   left                        right
   bottom-left  bottom  bottom-right
@@ -37,8 +37,9 @@ Perfect if you use tools like [Plash](https://sindresorhus.com/plash).
   - [`?randomColors`](https://time.pablopunk.com/?randomColors)
 - `blink`: The colon between the hours and the minutes will blink each second.
   - [`?blink`](https://time.pablopunk.com/?blink)
-- `showLink`: A link to this repo is shown automatically when mouse input is detected, but it can be forced using this option.
-  - [`?showLink`](https://time.pablopunk.com/?showLink)
+- `showLink`: By default, a link to this repo is shown when mouse input is detected, but it can be forced always on or off.
+  - On: [`?showLink`](https://time.pablopunk.com/?showLink) or [`?showLink=true`](https://time.pablopunk.com/?showLink=true)
+  - Off: [`?showLink=false`](https://time.pablopunk.com/?showLink=false)
 - `format=12`: Don't like military time? Shame on you. But you can use 12h format instead.
   - [`?format=12`](https://time.pablopunk.com/?format=12)
 - `pad`: Single digit hours will be padded with a 0: 9:41 will be shown as 09:41.

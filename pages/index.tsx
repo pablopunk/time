@@ -40,7 +40,7 @@ interface IProps {
   bg: string
   font: string
   fontSize: string
-  showLink: boolean
+  showLink: string
   blink: boolean
   position: Position
   format: 12 | 24
@@ -51,6 +51,8 @@ interface IState {
   hours: string
   minutes: string
   seconds: string
+  showLink: boolean
+  considerMouseInteraction: boolean
   mouseInteraction: boolean
   lastTickHadColon: boolean
   clearMouseTimeout?: ReturnType<typeof setTimeout>
@@ -109,7 +111,7 @@ export default class extends React.Component<IProps, IState> {
       ...query,
       seconds: query.seconds != null,
       randomColors: query.randomColors != null,
-      showLink: query.showLink != null,
+      showLink: query.showLink,
       blink: query.blink != null,
       format: parseInt(query.format || '24'),
       pad: query.pad != null,
@@ -119,12 +121,27 @@ export default class extends React.Component<IProps, IState> {
   constructor(props) {
     super(props)
 
+    let showLink: boolean
+    switch (this.props.showLink) {
+      case '':
+      case 'true':
+        showLink = true
+        break;
+      case 'false':
+        showLink = false
+        break
+      default:
+        showLink = undefined
+        break
+    }
+
     this.state = {
       hours: '',
       minutes: '',
       seconds: '',
-      mouseInteraction:
-        this.props.showLink == null ? false : this.props.showLink,
+      showLink: showLink,
+      considerMouseInteraction: showLink == undefined,
+      mouseInteraction: [undefined, true].includes(showLink),
       lastTickHadColon: false,
     }
   }
@@ -173,7 +190,8 @@ export default class extends React.Component<IProps, IState> {
   }
 
   mouseInteracting() {
-    const { mouseInteraction, clearMouseTimeout } = this.state
+    const { clearMouseTimeout, considerMouseInteraction } = this.state
+    if (!considerMouseInteraction) return
 
     if (clearMouseTimeout) {
       clearTimeout(clearMouseTimeout)
@@ -204,7 +222,9 @@ export default class extends React.Component<IProps, IState> {
     return (
       <>
         {mouseInteraction && (
-          <a href="https://github.com/pablopunk/time">Code available here</a>
+          <a href="https://github.com/pablopunk/time">
+            Code available here
+          </a>
         )}
         <main onMouseMove={() => this.mouseInteracting()}>
           <div id="time">
