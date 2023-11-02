@@ -31,5 +31,8 @@
     "semi": false,
     "singleQuote": true,
     "tabWidth": 2
+  },
+  "engines": {
+    "node": "18"
   }
 }
