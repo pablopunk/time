@@ -173,7 +173,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   mouseInteracting() {
-    const { mouseInteraction, clearMouseTimeout } = this.state
+    const { clearMouseTimeout } = this.state
 
     if (clearMouseTimeout) {
       clearTimeout(clearMouseTimeout)
@@ -191,7 +191,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { blink } = this.props
+    const { blink, showLink } = this.props
     const { lastTickHadColon, mouseInteraction } = this.state
     let colonOpacity = 1
 
@@ -203,7 +203,7 @@ export default class extends React.Component<IProps, IState> {
 
     return (
       <>
-        {mouseInteraction && (
+        {(mouseInteraction || showLink) && (
           <a href="https://github.com/pablopunk/time">Code available here</a>
         )}
         <main onMouseMove={() => this.mouseInteracting()}>
