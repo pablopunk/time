@@ -22,6 +22,19 @@ function whatTimeIsIt(props: IProps) {
   return time
 }
 
+async function getBingPhotoOfTheDayUrl() {
+  // For local dev
+  // const imageUrl =
+  //   'http://www.bing.com/th?id=OHR.NewYearFuji_ROW7249160512_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp'
+
+  const baseUrl = 'http://www.bing.com'
+  const response = await fetch(`/api`)
+  const json = await response.json()
+  const imageUrl = baseUrl + json.images[0].url
+
+  return imageUrl
+}
+
 type Position =
   | 'top-left'
   | 'top'
