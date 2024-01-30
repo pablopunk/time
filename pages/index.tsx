@@ -58,6 +58,7 @@ interface IProps {
   position: Position
   format: 12 | 24
   pad: boolean
+  bgImage: string | boolean
 }
 
 interface IState {
@@ -126,6 +127,7 @@ export default class extends React.Component<IProps, IState> {
       blink: query.blink != null,
       format: parseInt(query.format || '24'),
       pad: query.pad != null,
+      bgImage: query.useBingPhoto != null && (await getBingPhotoOfTheDayUrl()),
     }
   }
 
@@ -252,7 +254,9 @@ export default class extends React.Component<IProps, IState> {
               justify-content: ${flexPositions.justifyContent};
               font-weight: bold;
               color: ${this.props.fg};
-              background-color: ${this.props.bg};
+              ${this.props.bgImage
+                ? `background-image: url(${this.props.bgImage});`
+                : `background-color: ${this.props.bg};`}
               font-family: ${this.props.font};
               font-size: ${this.props.fontSize};
               font-variant-numeric: tabular-nums;
