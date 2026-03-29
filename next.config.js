@@ -1,4 +1,10 @@
+const path = require('path')
+
 module.exports = {
+  outputFileTracingRoot: path.join(__dirname, '..'),
+  turbopack: {
+    root: path.join(__dirname, '..'),
+  },
   async rewrites() {
     return [
       {
@@ -12,8 +18,5 @@ module.exports = {
         locale: false,
       },
     ]
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
 }
