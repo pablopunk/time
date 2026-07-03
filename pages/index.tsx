@@ -56,14 +56,70 @@ interface IState {
   clearMouseTimeout?: ReturnType<typeof setTimeout>
 }
 
-function normalizeColors(colors) {
-  const normalized = {}
-  ;['fg', 'bg'].map((key) => {
+interface ColorParams {
+  fg?: string
+  bg?: string
+  font?: string
+  fontSize?: string
+  position?: string
+  format?: string
+  seconds?: string
+  randomColors?: string
+  showLink?: string
+  blink?: string
+  pad?: string
+  [key: string]: string | undefined
+}
+
+function firstString(value: unknown): string | undefined {
+  if (Array.isArray(value)) return value[0]
+  return typeof value === 'string' ? value : undefined
+}
+
+function sanitizeCSSValue(
+  value: string | undefined,
+  type: 'color' | 'font' | 'fontSize'
+): string | undefined {
+  if (value == null) return undefined
+  const trimmed = value.trim()
+  if (!trimmed) return undefined
+
+  if (type === 'color') {
+    // Allow hex colors, rgb/rgba/hsl/hsla, and CSS color keywords
+    if (/^#[0-9a-fA-F]{3,8}$/.test(trimmed)) return trimmed
+    if (/^(rgb|rgba|hsl|hsla)\([^)]*\)$/.test(trimmed)) return trimmed
+    if (/^[a-zA-Z]+$/.test(trimmed)) return trimmed
+    return undefined
+  }
+
+  if (type === 'fontSize') {
+    // Allow CSS length values
+    if (
+      /^\d+(\.\d+)?(em|rem|px|%|vh|vw|vmin|vmax|ch|ex|cm|mm|in|pt|pc)$/.test(
+        trimmed
+      )
+    )
+      return trimmed
+    return undefined
+  }
+
+  if (type === 'font') {
+    // Strip potentially dangerous characters from font-family values
+    return trimmed.replace(/[<>&"'()]/g, '')
+  }
+
+  return undefined
+}
+
+function normalizeColors(colors: ColorParams): ColorParams {
+  const normalized: Record<string, string> = {}
+  ;['fg', 'bg'].forEach((key) => {
     if (colors[key] != null) {
-      if (isHexColor(`#${colors[key]}`)) {
-        normalized[key] = `#${colors[key]}`
+      const val = String(colors[key])
+      if (isHexColor(`#${val}`)) {
+        normalized[key] = `#${val}`
       } else {
-        normalized[key] = colors[key]
+        normalized[key] = val
       }
     }
   })
@@ -74,8 +130,8 @@ function normalizeColors(colors) {
   }
 }
 
-function randomizeColors(colors) {
-  const palette = palettes[Math.ceil(Math.random() * palettes.length)]
+function randomizeColors(colors: ColorParams): ColorParams {
+  const palette = palettes[Math.floor(Math.random() * palettes.length)]
 
   return {
     ...colors,
@@ -85,15 +141,27 @@ function randomizeColors(colors) {
 }
 
 export default class extends React.Component<IProps, IState> {
-  static async getInitialProps({ query }) {
-    query = normalizeColors(query)
+  private tickIntervalId?: ReturnType<typeof setInterval>
+  private blinkIntervalId?: ReturnType<typeof setInterval>
 
-    if (query.randomColors != null) {
-      query = randomizeColors(query)
+  static async getInitialProps({
+    query,
+  }: {
+    query: Record<string, string | undefined>
+  }) {
+    let normalizedQuery = normalizeColors(query)
+
+    if (normalizedQuery.randomColors != null) {
+      normalizedQuery = randomizeColors(normalizedQuery)
     }
 
+    const fg = sanitizeCSSValue(normalizedQuery.fg as string | undefined, 'color')
+    const bg = sanitizeCSSValue(normalizedQuery.bg as string | undefined, 'color')
+    const font = sanitizeCSSValue(normalizedQuery.font as string | undefined, 'font')
+    const fontSize = sanitizeCSSValue(normalizedQuery.fontSize as string | undefined, 'fontSize')
+
     return {
-      font: `system-ui,
+      font: font ?? `system-ui,
               -apple-system,
               'Segoe UI',
               Roboto,
@@ -102,21 +170,20 @@ export default class extends React.Component<IProps, IState> {
               sans-serif,
               'Apple Color Emoji',
               'Segoe UI Emoji'`,
-      bg: 'black',
-      fg: 'royalblue',
-      fontSize: '10em',
-      position: 'center',
-      ...query,
-      seconds: query.seconds != null,
-      randomColors: query.randomColors != null,
-      showLink: query.showLink != null,
-      blink: query.blink != null,
-      format: parseInt(query.format || '24'),
-      pad: query.pad != null,
+      bg: bg ?? 'black',
+      fg: fg ?? 'royalblue',
+      fontSize: fontSize ?? '10em',
+      position: (normalizedQuery.position as Position | undefined) ?? 'center',
+      seconds: normalizedQuery.seconds != null,
+      randomColors: normalizedQuery.randomColors != null,
+      showLink: normalizedQuery.showLink != null,
+      blink: normalizedQuery.blink != null,
+      format: (parseInt((normalizedQuery.format as string) || '24') as 12 | 24),
+      pad: normalizedQuery.pad != null,
     }
   }
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props)
 
     this.state = {
@@ -136,12 +203,12 @@ export default class extends React.Component<IProps, IState> {
 
   componentDidMount() {
     this.tick()
-    setInterval(() => {
+    this.tickIntervalId = setInterval(() => {
       this.tick()
     }, 1000)
 
     // Let colons blink twice a second
-    setInterval(() => {
+    this.blinkIntervalId = setInterval(() => {
       const { lastTickHadColon } = this.state
 
       this.setState({
@@ -150,11 +217,24 @@ export default class extends React.Component<IProps, IState> {
     }, 500)
   }
 
+  componentWillUnmount() {
+    if (this.tickIntervalId) {
+      clearInterval(this.tickIntervalId)
+    }
+    if (this.blinkIntervalId) {
+      clearInterval(this.blinkIntervalId)
+    }
+    const { clearMouseTimeout } = this.state
+    if (clearMouseTimeout) {
+      clearTimeout(clearMouseTimeout)
+    }
+  }
+
   getFlexPositions() {
     const { position } = this.props
     let flexPosition = {
-      alignItems: 'center',
-      justifyContent: 'center',
+      alignItems: 'center' as string,
+      justifyContent: 'center' as string,
     }
 
     if (position.includes('top')) {
