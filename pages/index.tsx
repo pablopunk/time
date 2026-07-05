@@ -13,7 +13,11 @@ function whatTimeIsIt(props: IProps) {
     hours = hours % 12 || 12
   }
 
-  let time: any = {
+  let time: {
+    hours: string
+    minutes: string
+    seconds: string
+  } = {
     hours: hours.toString().padStart(props.pad ? 2 : 1, '0'),
     minutes: minutes.toString().padStart(2, '0'),
     seconds: seconds.toString().padStart(2, '0'),
@@ -53,12 +57,25 @@ interface IState {
   seconds: string
   mouseInteraction: boolean
   lastTickHadColon: boolean
-  clearMouseTimeout?: ReturnType<typeof setTimeout>
 }
 
-function normalizeColors(colors) {
-  const normalized = {}
-  ;['fg', 'bg'].map((key) => {
+const CSS_LENGTH_REGEX =
+  /^\d+(\.\d+)?(px|em|rem|vh|vw|%|pt|cm|mm|in|ex|ch|vmin|vmax)$/
+
+function sanitizeCSS(value: string): string {
+  if (!value) return value
+  let sanitized = value.replace(/[<>]/g, '')
+  sanitized = sanitized.replace(/<\/style>/gi, '')
+  sanitized = sanitized.replace(/url\(/gi, '')
+  sanitized = sanitized.replace(/[;(){}]/g, '')
+  return sanitized
+}
+
+function normalizeColors(
+  colors: Record<string, string | undefined>
+): Record<string, string | undefined> {
+  const normalized: Record<string, string | undefined> = {}
+  ;['fg', 'bg'].forEach((key) => {
     if (colors[key] != null) {
       if (isHexColor(`#${colors[key]}`)) {
         normalized[key] = `#${colors[key]}`
@@ -74,8 +91,10 @@ function normalizeColors(colors) {
   }
 }
 
-function randomizeColors(colors) {
-  const palette = palettes[Math.ceil(Math.random() * palettes.length)]
+function randomizeColors(
+  colors: Record<string, string | undefined>
+): Record<string, string | undefined> {
+  const palette = palettes[Math.floor(Math.random() * palettes.length)]
 
   return {
     ...colors,
@@ -84,15 +103,44 @@ function randomizeColors(colors) {
   }
 }
 
-export default class extends React.Component<IProps, IState> {
-  static async getInitialProps({ query }) {
-    query = normalizeColors(query)
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props)
+    this.state = { hasError: false }
+  }
+
+  static getDerivedStateFromError(): { hasError: boolean } {
+    return { hasError: true }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <main>
+          <div id="time">Something went wrong</div>
+        </main>
+      )
+    }
+    return this.props.children as React.ReactElement
+  }
+}
+
+class Clock extends React.Component<IProps, IState> {
+  private tickInterval: ReturnType<typeof setInterval> | undefined
+  private blinkInterval: ReturnType<typeof setInterval> | undefined
+  private mouseTimeoutRef: ReturnType<typeof setTimeout> | undefined
+
+  static async getInitialProps({ query }: { query: Record<string, string> }) {
+    query = normalizeColors(query) as Record<string, string>
 
     if (query.randomColors != null) {
-      query = randomizeColors(query)
+      query = randomizeColors(query) as Record<string, string>
     }
 
-    return {
+    const props: Record<string, unknown> = {
       font: `system-ui,
               -apple-system,
               'Segoe UI',
@@ -114,9 +162,23 @@ export default class extends React.Component<IProps, IState> {
       format: parseInt(query.format || '24'),
       pad: query.pad != null,
     }
+
+    // Sanitize CSS values to prevent XSS
+    props.fg = sanitizeCSS(props.fg as string)
+    props.bg = sanitizeCSS(props.bg as string)
+    props.font = sanitizeCSS(props.font as string)
+
+    // Validate fontSize; default to '10em' if invalid
+    const fontSize = props.fontSize as string
+    if (fontSize && !CSS_LENGTH_REGEX.test(fontSize)) {
+      props.fontSize = '10em'
+    }
+    props.fontSize = sanitizeCSS(props.fontSize as string)
+
+    return props
   }
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props)
 
     this.state = {
@@ -136,12 +198,12 @@ export default class extends React.Component<IProps, IState> {
 
   componentDidMount() {
     this.tick()
-    setInterval(() => {
+    this.tickInterval = setInterval(() => {
       this.tick()
     }, 1000)
 
     // Let colons blink twice a second
-    setInterval(() => {
+    this.blinkInterval = setInterval(() => {
       const { lastTickHadColon } = this.state
 
       this.setState({
@@ -150,7 +212,13 @@ export default class extends React.Component<IProps, IState> {
     }, 500)
   }
 
-  getFlexPositions() {
+  componentWillUnmount() {
+    if (this.tickInterval) clearInterval(this.tickInterval)
+    if (this.blinkInterval) clearInterval(this.blinkInterval)
+    if (this.mouseTimeoutRef) clearTimeout(this.mouseTimeoutRef)
+  }
+
+  getFlexPositions(): { alignItems: string; justifyContent: string } {
     const { position } = this.props
     let flexPosition = {
       alignItems: 'center',
@@ -173,20 +241,17 @@ export default class extends React.Component<IProps, IState> {
   }
 
   mouseInteracting() {
-    const { clearMouseTimeout } = this.state
-
-    if (clearMouseTimeout) {
-      clearTimeout(clearMouseTimeout)
+    if (this.mouseTimeoutRef) {
+      clearTimeout(this.mouseTimeoutRef)
     }
 
-    const newClearMouseTimeout = setTimeout(
+    this.mouseTimeoutRef = setTimeout(
       () => this.setState({ mouseInteraction: false }),
       2000
     )
 
     this.setState({
       mouseInteraction: true,
-      clearMouseTimeout: newClearMouseTimeout,
     })
   }
 
@@ -264,3 +329,16 @@ export default class extends React.Component<IProps, IState> {
     )
   }
 }
+
+function IndexPage(props: IProps) {
+  return (
+    <ErrorBoundary>
+      <Clock {...props} />
+    </ErrorBoundary>
+  )
+}
+
+// Attach getInitialProps from Clock to the page component
+(IndexPage as any).getInitialProps = Clock.getInitialProps
+
+export default IndexPage
