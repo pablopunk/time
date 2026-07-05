@@ -1,7 +1,4 @@
 module.exports = {
-  outputFileTracingIncludes: {
-    '/': ['./node_modules/styled-jsx/**/*'],
-  },
   async rewrites() {
     return [
       {
