@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "next dev -p 1234",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "vitest run"
   },
   "dependencies": {
     "is-hexcolor": "^1.0.0",
@@ -17,12 +18,16 @@
     "styled-jsx": "^5.1.7"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^24.5.2",
     "@types/react": "^19.2.2",
     "husky": "^9.1.7",
+    "jsdom": "^29.1.1",
     "prettier": "^3.6.2",
     "pretty-quick": "^4.2.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
   },
   "husky": {
     "hooks": {
